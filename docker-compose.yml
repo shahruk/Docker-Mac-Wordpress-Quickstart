@@ -1,0 +1,25 @@
+apache:
+  build: ./resources/apache
+  ports:
+    - "8080:80"
+  links:
+    - mysql
+  volumes:
+    - ./wordpress:/var/www/html
+
+mysql:
+  build: ./resources/mysql
+  volumes:
+    - ./resources/mysql:/docker-entrypoint-initdb.d
+  environment:
+    MYSQL_DATABASE: wordpress
+    MYSQL_ROOT_PASSWORD: root
+
+phpmyadmin:
+  image: corbinu/docker-phpmyadmin
+  ports:
+    - "8081:80"
+  links:
+    - mysql
+  environment:
+    MYSQL_USERNAME: root
